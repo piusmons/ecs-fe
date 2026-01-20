@@ -1,4 +1,4 @@
-name: cicd
+name: ci
 
 env:
   AWS_REGION: ap-southeast-1
