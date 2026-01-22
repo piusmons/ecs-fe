@@ -4,6 +4,8 @@ env:
   AWS_REGION: ap-southeast-1
   ECR_REPO: 725753070509.dkr.ecr.ap-southeast-1.amazonaws.com/ecs-poc-frontend
   TASK_DEFINITION: ecs-poc-dev
+  ECS_CLUSTER: ecs-poc-dev-cluster
+  ECS_SERVICE: ecs-poc-dev
 on:
   push:
     branches:
@@ -68,8 +70,10 @@ jobs:
           container-name: frontend
           image: ${{ needs.build-and-push.outputs.image-tag }}
 
-      - name: Show rendered task definition
-        run: |
-          echo "$TASK_DEF"
-        env:
-          TASK_DEF: ${{ steps.render-task-def.outputs.task-definition }}
+      - name: Deploy to Amazon ECS
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: task-definition.json
+          cluster: ${{ env.ECS_CLUSTER }}
+          service: ${{ env.ECS_SERVICE }}
+          wait-for-service-stability: true
