@@ -70,4 +70,6 @@ jobs:
 
       - name: Show rendered task definition
         run: |
-          echo "${{ steps.render-task-def.outputs.task-definition }}"
+          echo "$TASK_DEF"
+        env:
+          TASK_DEF: ${{ steps.render-task-def.outputs.task-definition }}
