@@ -60,8 +60,12 @@ jobs:
         run: |
           aws ecs describe-task-definition \
             --task-definition ${{ env.TASK_DEFINITION }} \
-            --query 'taskDefinition | del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)' \
-            > task-definition.json
+            --query 'taskDefinition' \
+            --output json > task-definition.json
+
+          # Remove fields that can't be registered
+          jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)' \
+            task-definition.json > task-definition-rendered.json
 
       - name: Render task definition
         id: render-task-def
