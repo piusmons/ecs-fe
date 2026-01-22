@@ -60,7 +60,8 @@ jobs:
         run: |
           aws ecs describe-task-definition \
             --task-definition ${{ env.TASK_DEFINITION }} \
-            --query taskDefinition > task-definition.json
+            --query 'taskDefinition | del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)' \
+            > task-definition.json
 
       - name: Render task definition
         id: render-task-def
@@ -73,7 +74,7 @@ jobs:
       - name: Deploy to Amazon ECS
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
         with:
-          task-definition: task-definition.json
+          task-definition: ${{ steps.render-task-def.outputs.task-definition }}
           cluster: ${{ env.ECS_CLUSTER }}
           service: ${{ env.ECS_SERVICE }}
           wait-for-service-stability: true
