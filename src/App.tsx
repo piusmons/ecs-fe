@@ -23,7 +23,9 @@ function App() {
       <h1>Vite + React</h1>
 
       <div className="card">
-        <button onClick={() => setCount((c) => c + 1)}>count is {count}</button>
+        <button onClick={() => setCount((c) => c + 1)}>
+          count is g{count}
+        </button>
 
         <button onClick={triggerPing} style={{ marginLeft: "10px" }}>
           Ping Backend
