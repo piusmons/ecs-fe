@@ -64,7 +64,7 @@ jobs:
         id: render-task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1.8.3
         with:
-          task-definition: .aws/task-definition.json
+          task-definition: task-definition.json
           container-name: frontend
           image: ${{ needs.build-and-push.outputs.image-tag }}
 
