@@ -36,7 +36,7 @@ jobs:
 
       - name: Push to ECR
         run: |
-          docker push $IMAGE_TAG
+          docker push ${{ steps.build-image.outputs.image }}
 
   deploy:
     runs-on: ubuntu-latest
