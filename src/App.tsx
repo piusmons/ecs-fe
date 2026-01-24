@@ -24,7 +24,7 @@ function App() {
 
       <div className="card">
         <button onClick={() => setCount((c) => c + 1)}>
-          count is yey{count}
+          count is ads{count}
         </button>
 
         <button onClick={triggerPing} style={{ marginLeft: "10px" }}>

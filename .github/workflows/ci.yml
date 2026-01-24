@@ -2,7 +2,7 @@ name: ci
 
 env:
   AWS_REGION: ap-southeast-1
-  ECR_REPO: 725753070509.dkr.ecr.ap-southeast-1.amazonaws.com/ecs-poc-frontend
+  ECR_REPO: 725753070509.dkr.ecr.ap-southeast-1.amazonaws.com/ecs-poc-dev-frontend
   TASK_DEFINITION: ecs-poc-dev
   ECS_CLUSTER: ecs-poc-dev-cluster
   ECS_SERVICE: ecs-poc-dev
