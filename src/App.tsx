@@ -20,7 +20,7 @@ function App() {
 
   return (
     <>
-      <h1>Vite + React</h1>
+      <h1>Vite + Reaact</h1>
 
       <div className="card">
         <button onClick={() => setCount((c) => c + 1)}>
