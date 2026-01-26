@@ -18,7 +18,8 @@ jobs:
       id-token: write
       contents: read
     outputs:
-      image-tag: ${{ steps.build-image.outputs.image }}
+      image-tag: ${{ steps.set-image-tag.outputs.image }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v6.0.1
@@ -44,7 +45,7 @@ jobs:
             echo "exists=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Build and tag Docker image
+      - name: Build and push
         if: steps.check-image.outputs.exists == 'false'
         run: |
           docker build --platform linux/amd64 \
@@ -59,7 +60,7 @@ jobs:
       - name: Set Image Tag
         id: set-image-tag
         run: |
-          echo "image=${{ env.ECR_REPO }}:latest" >> $GITHUB_OUTPUT
+          echo "image=${{ env.ECR_REPO }}:${{ github.sha }}" >> $GITHUB_OUTPUT
 
   deploy:
     runs-on: ubuntu-latest
