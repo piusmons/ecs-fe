@@ -32,19 +32,36 @@ jobs:
       - name: Login to ECR
         run: |
           aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REPO
+
+      - name: Check if image exists in ECR
+        id: check-image
+        run: |
+          # Check if the specific commit SHA exists in the repo
+          if aws ecr describe-images --repository-name ecs-poc-dev-frontend --image-ids imageTag=${{ github.sha }} > /dev/null 2>&1; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Image already exists in ECR. Skipping build."
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Build and tag Docker image
+        if: steps.check-image.outputs.exists == 'false'
         id: build-image
         run: |
-          # Build once with two tags
-          docker build -t $ECR_REPO:${{ github.sha }} -t $ECR_REPO:latest .
-
-          # Set output for subsequent steps
-          echo "image=$ECR_REPO:${{ github.sha }}" >> $GITHUB_OUTPUT
+          docker build \
+            --platform linux/amd64 \
+            -t $ECR_REPO:${{ github.sha }} \
+            -t $ECR_REPO:latest .
 
       - name: Push to ECR
         run: |
           docker push $ECR_REPO:${{ github.sha }}
           docker push $ECR_REPO:latest
+
+      - name: Finalize Image Tag
+        id: set-output
+        run: |
+          echo "image=$ECR_REPO:${{ github.sha }}" >> $GITHUB_OUTPUT
 
   deploy:
     runs-on: ubuntu-latest
