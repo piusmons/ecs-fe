@@ -53,6 +53,7 @@ jobs:
             -t ${{ env.ECR_REPO }}:latest .
 
       - name: Push to ECR
+        if: steps.check-image.outputs.exists == 'false'
         run: |
           docker push $ECR_REPO:${{ github.sha }}
           docker push $ECR_REPO:latest
