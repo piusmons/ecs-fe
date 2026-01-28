@@ -8,7 +8,6 @@ function App() {
   // Function to call backend
   const triggerPing = async () => {
     try {
-      const apiBase = import.meta.env.VITE_API_BASE_URL;
       const res = await fetch(`/api/ping`);
       if (!res.ok) throw new Error(`HTTP error ${res.status}`);
       const data = await res.json();
