@@ -13,7 +13,7 @@ function App() {
       const data = await res.json();
       setMessage(JSON.stringify(data, null, 2)); // nicely formatted
     } catch (err: any) {
-      setMessage("Errsor: " + err.message);
+      setMessage("Errssor: " + err.message);
     }
   };
 
